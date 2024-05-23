@@ -55,6 +55,10 @@ const Home = () => {
           ) : (
                   
                   <>
+                      
+        <button className="btn btn-primary" onClick={handleLogout}>
+        Logout
+                      </button>
                   <p>Loading...</p>
                   
                       </>
