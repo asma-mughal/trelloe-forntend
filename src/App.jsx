@@ -23,22 +23,17 @@ function App() {
   return (
     <>
    <Router>
-      <div className="App">
-        <div className="auth-wrapper">
-          <div className="auth-inner">
             <Routes>
               <Route
                 path="/"
-                element={user ? <Navigate to="/profile" /> : <SignIn />}
+                element={user ? <Navigate to="/profile" /> : <Home />}
               />
               <Route path="/login" element={<SignIn />} />
                 <Route path="/register" element={<SignUp />} />
                 
               <Route path="/profile" element={<Home />} />
             </Routes>
-          </div>
-        </div>
-      </div>
+          
     </Router>
     </>
   )
