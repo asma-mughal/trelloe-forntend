@@ -43,7 +43,7 @@ const SignUp = () => {
               
           }
           console.log("User Registered Successfully!!");
-          navigate('/profile'); // Use navigate function to redirect
+          navigate('/login'); // Use navigate function to redirect
         } catch (error) {
           console.log(error.message);
           setError(error.message);
@@ -52,7 +52,7 @@ const SignUp = () => {
     useEffect(() => {
         if (registerSuccess) {
          
-        navigate("/profile")   
+        navigate("/login")   
         }
     },[registerSuccess])
     return (
@@ -69,7 +69,7 @@ const SignUp = () => {
         <label className="block text-gray-700 font-medium mb-2">First name</label>
         <input
           type="text"
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
           placeholder="First name"
           onChange={(e) => setFname(e.target.value)}
           required
@@ -80,7 +80,7 @@ const SignUp = () => {
         <label className="block text-gray-700 font-medium mb-2">Last name</label>
         <input
           type="text"
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
           placeholder="Last name"
           onChange={(e) => setLname(e.target.value)}
         />
@@ -90,7 +90,7 @@ const SignUp = () => {
         <label className="block text-gray-700 font-medium mb-2">Email address</label>
         <input
           type="email"
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
           placeholder="Enter email"
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -101,7 +101,7 @@ const SignUp = () => {
         <label className="block text-gray-700 font-medium mb-2">Password</label>
         <input
           type="password"
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
           placeholder="Enter password"
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -109,12 +109,12 @@ const SignUp = () => {
       </div>
   
       <div className="mb-6">
-        <button type="submit" className="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition duration-300">
+        <button type="submit" className="w-full bg-indigo-500 text-white py-3 rounded-lg hover:bg-indigo-600 transition duration-300">
           Sign Up
         </button>
       </div>
       <p className="text-right text-gray-600">
-        Already registered <a href="/login" className="text-green-500 hover:underline">Login</a>
+        Already registered? <a href="/login" className="text-indigo-500 hover:underline">Login</a>
       </p>
     </form>
       

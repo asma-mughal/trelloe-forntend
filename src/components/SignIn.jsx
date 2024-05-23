@@ -29,7 +29,7 @@ const SignIn = () => {
       <label className="block text-gray-700 font-medium mb-2">Email address</label>
       <input
         type="email"
-        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
         placeholder="Enter email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -40,7 +40,7 @@ const SignIn = () => {
       <label className="block text-gray-700 font-medium mb-2">Password</label>
       <input
         type="password"
-        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
         placeholder="Enter password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
@@ -48,12 +48,12 @@ const SignIn = () => {
     </div>
   
     <div className="mb-6">
-      <button type="submit" className="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition duration-300">
+      <button type="submit" className="w-full bg-indigo-500 text-white py-3 rounded-lg hover:bg-indigo-600 transition duration-300">
         Submit
       </button>
     </div>
     <p className="text-right text-gray-600">
-      New user <a href="/register" className="text-green-500 hover:underline">Register Here</a>
+      New user ?<a href="/register" className="text-indigo-500 hover:underline">Register Here</a>
     </p>
   </form>
   
