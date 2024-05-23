@@ -21,19 +21,13 @@ function App() {
     });
   });
   return (
-    <>
-            <Routes>
-              <Route
-                path="/"
-                element={user ? <Navigate to="/profile" /> : <SignIn />}
-              />
-              <Route path="/login" element={<SignIn />} />
-                <Route path="/register" element={<SignUp />} />
-                
-              <Route path="/profile" element={<Home />} />
+        <Routes>
+              <Route path='/' exact element={user ? <Navigate to="/profile" /> : <SignIn />} />
+              <Route path='/login' exact element={<SignIn />} />
+              <Route path='/register' exact element={<SignUp />} />
+              <Route path='/profile' exact element={<Home />} />
             </Routes>
-        
-    </>
+
   )
 }
 
