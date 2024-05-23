@@ -22,7 +22,6 @@ function App() {
   });
   return (
     <>
-   <Router>
             <Routes>
               <Route
                 path="/"
@@ -33,8 +32,7 @@ function App() {
                 
               <Route path="/profile" element={<Home />} />
             </Routes>
-          
-    </Router>
+        
     </>
   )
 }
