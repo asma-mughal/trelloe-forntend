@@ -1,4 +1,4 @@
-export const API_URL = "http://localhost:8080";
+export const API_URL = "https://board-game-plum.vercel.app";
 //https://board-game-plum.vercel.app/
 
 export const formatDate = (dateString) => {
