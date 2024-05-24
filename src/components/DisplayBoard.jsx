@@ -4,8 +4,10 @@ import BoardTask from "./BoardTask";
 import { FaTrash } from "react-icons/fa";
 const DisplayBoard = ({ userId }) => {
   const [boards, setBoards] = useState([]);
+  const [boardSuccessMessages, setBoardSuccessMessages] = useState({});
+  const [loading, setLoading] = useState({})
   const [selectedBoardId, setSelectedBoardId] = useState();
-  ///list/:userId
+  const [delayedTasks, setDelayedTasks] = useState({});
   useEffect(() => {
     fetchBoards();
   }, [userId, boards]);
@@ -67,17 +69,33 @@ const DisplayBoard = ({ userId }) => {
         if (!response.ok) {
           throw new Error("Failed to save task");
         }
+        return response.json();
+      })
+      .then((data) => {
         setIsModalOpen(false);
         setNewTask({
           title: "",
           description: "",
           dueDate: "",
         });
+        setBoardSuccessMessages((prevMessages) => ({
+          ...prevMessages,
+          [selectedBoardId]: data.message,
+        }));
+
+        setTimeout(() => {
+          setBoardSuccessMessages((prevMessages) => ({
+            ...prevMessages,
+            [selectedBoardId]: '',
+          }));
+        }, 3000);
+
       })
       .catch((error) => {
         console.error("Error saving task:", error);
       });
   };
+
   const [tasks, setTasks] = useState({});
 
   useEffect(() => {
@@ -104,10 +122,23 @@ const DisplayBoard = ({ userId }) => {
           ...prevTasks,
           [boardId]: data?.tasks,
         }));
+        setLoading((prevLoading) => ({
+          ...prevLoading,
+          [boardId]: false,
+        }));
+        setTimeout(() => {
+          setDelayedTasks((prevTasks) => ({
+            ...prevTasks,
+            [boardId]: data?.tasks,
+          }));
+        }, 2000); // Delay of 2 seconds
       })
       .catch((error) => {
+        setLoading((prevLoading) => ({
+          ...prevLoading,
+          [boardId]: false,
+        }));
         console.error("Error fetching tasks for board:", error);
-        // Handle error, e.g., display error message to the user
       });
   };
   const handleDeleteBoard = async (id) => {
@@ -142,7 +173,7 @@ const DisplayBoard = ({ userId }) => {
             >
               <div className="p-4 flex-grow flex flex-col">
                 <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-lg font-semibold">{board.name}</h3>
+                  <h3 className="text-lg capitalize font-semibold">{board.name}</h3>
                   <button
                     onClick={() => handleDeleteBoard(board._id)}
                     className="text-red-600 hover:text-red-700 focus:outline-none"
@@ -150,9 +181,45 @@ const DisplayBoard = ({ userId }) => {
                     <FaTrash />
                   </button>
                 </div>
+                <hr className="border-t-2 border-gray-200 my-2" />
+                {boardSuccessMessages[board._id] && (
+        <div className="p-4 mt-4 text-green-800 bg-green-200 rounded">
+          {boardSuccessMessages[board._id]}
+        </div>
+      )}
                 <div className="pb-4 flex-grow">
-                  <h4 className="text-base font-normal mb-2">Tasks</h4>
-                  {tasks[board._id]?.length === 0 ? (
+                  <h4 className="text-base font-bold mb-2">TASKS : </h4>
+                  { loading[board._id] ? (
+          <div className="flex justify-center items-center">
+            <button
+              type="button"
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              disabled
+            >
+              <svg
+                className="animate-spin -ml-1 mr-3 h-5 w-5 text-black"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C6.48 0 2 4.48 2 10h2zm2 5.3a7.96 7.96 0 01-2-5.3H2c0 2.42 1 4.64 2.64 6.36l1.36-1.06z"
+                ></path>
+              </svg>
+              Loading...
+            </button>
+          </div>
+        ) :tasks[board._id]?.length === 0 ? (
                     <p>No tasks available for this board.</p>
                   ) : (
                     <ul>
