@@ -5,12 +5,17 @@ import { FaTrash } from "react-icons/fa";
 const DisplayBoard = ({ userId }) => {
   const [boards, setBoards] = useState([]);
   const [boardSuccessMessages, setBoardSuccessMessages] = useState({});
+  const [tasks, setTasks] = useState({});
   const [loading, setLoading] = useState({})
   const [selectedBoardId, setSelectedBoardId] = useState();
   const [delayedTasks, setDelayedTasks] = useState({});
   useEffect(() => {
     fetchBoards();
-  }, [userId]);
+  }, [userId, tasks]);
+
+  useEffect(() => {
+    fetchTasksForAllBoards();
+  }, [tasks, boards]);
   const fetchBoards = () => {
     fetch(`${API_URL}/boards/list/${userId}`)
       .then((response) => {
@@ -96,11 +101,6 @@ const DisplayBoard = ({ userId }) => {
       });
   };
 
-  const [tasks, setTasks] = useState({});
-
-  useEffect(() => {
-    fetchTasksForAllBoards();
-  }, [boards]);
 
   const fetchTasksForAllBoards = () => {
     boards.forEach((board) => {
