@@ -10,7 +10,7 @@ const DisplayBoard = ({ userId }) => {
   const [delayedTasks, setDelayedTasks] = useState({});
   useEffect(() => {
     fetchBoards();
-  }, [userId, boards]);
+  }, [userId]);
   const fetchBoards = () => {
     fetch(`${API_URL}/boards/list/${userId}`)
       .then((response) => {
@@ -158,6 +158,26 @@ const DisplayBoard = ({ userId }) => {
       console.error("Error deleting board:", error.message);
     }
   };
+  const [draggedIndex, setDraggedIndex] = useState(null);
+
+  const handleDragStart = (event, index) => {
+    setDraggedIndex(index);
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  const handleDrop = (event, newIndex) => {
+    event.preventDefault();
+    const draggedItem = boards[draggedIndex];
+    const updatedBoards = [...boards];
+    updatedBoards.splice(draggedIndex, 1);
+    updatedBoards.splice(newIndex, 0, draggedItem);
+    setBoards(updatedBoards);
+    setDraggedIndex(null);
+  };
+
 
   return (
     <div className="container mx-auto p-6">
@@ -165,12 +185,16 @@ const DisplayBoard = ({ userId }) => {
       {boards?.length === 0 ? (
         <p>No boards available. Add a board to get started.</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-          {boards?.map((board) => (
-            <div
-              key={board?._id}
-              className="bg-white rounded-lg overflow-auto shadow-md flex flex-col max-h-[600px]"
-            >
+        <div className="flex overflow-x-scroll bg-gray-100 pb-1 hide-scroll-bar"  onDragOver={handleDragOver} >
+        <div className="flex bg-white flex-nowrap">
+          {boards?.map((board, index) => (
+            <div key={board?._id} className="inline-block px-3"
+            draggable={true}
+            onDragStart={(e) => handleDragStart(e, index)}
+            onDrop={(e) => handleDrop(e, index)} >
+             <div
+               className="w-96 max-h-[800px] max-w-lg overflow-hidden rounded-lg shadow-md  hover:shadow-xl transition-shadow duration-300 ease-in-out"
+                 >
               <div className="p-4 flex-grow flex flex-col">
                 <div className="flex justify-between items-center mb-2">
                   <h3 className="text-lg capitalize font-semibold">{board.name}</h3>
@@ -245,9 +269,12 @@ const DisplayBoard = ({ userId }) => {
                   </button>
                 </div>
               </div>
-            </div>
+              </div>
+              </div>
           ))}
-        </div>
+              </div>
+            </div>
+        
       )}
       {isModalOpen && (
         <div className="fixed z-10 inset-0 overflow-y-auto">
